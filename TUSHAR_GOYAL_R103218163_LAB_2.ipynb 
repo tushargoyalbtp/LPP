@@ -1,0 +1,369 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "TUSHAR GOYAL_R103218163_LAB-2",
+      "provenance": [],
+      "authorship_tag": "ABX9TyPJ0JwUZJMjP4n3YMwMaAC1",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/tushargoyalbtp/LPP/blob/master/TUSHAR_GOYAL_R103218163_LAB_2.ipynb%20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "sJPNTvtsEVu6",
+        "colab_type": "text"
+      },
+      "source": [
+        "#Questions3\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "UWDRjH9zEen7",
+        "colab_type": "text"
+      },
+      "source": [
+        "##Problem Statement \n",
+        "###A company manufactures two products A and B. These products are processed in the same machine. It takes 10 minutes to process one unit of product A and 2 minutes for each unit of product B and the machine operates for a maximum of 35 hours in a week. Product A requires 1 kg and B 0.5 kg of raw material per unit, the supply of which is 600 kg per week. Market constraint on product B is known to be minimum of 800 units every week. Product A costs Rs. 5 per unit and sold at Rs. 10. Product B costs Rs. 6 per unit and can be sold in the market at a unit price of Rs. 8. Determine the number of units of A and B per week to maximize the profit.\n"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "badf_EF6EtWC",
+        "colab_type": "text"
+      },
+      "source": [
+        "####Maximize $z=5x_{1}+2x_{2}$\n",
+        "#####subject to constraints $10x_{1}+2x_{2}<=2100$\n",
+        "######$1x_{1}+0.5x_{2}<=600$\n",
+        "######$x_{1}>=0, x_{2}>=0$\n",
+        "\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "g-gSIx6CGV84",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 302
+        },
+        "outputId": "6aae3017-6f54-48ae-f60f-28103d4e21f1"
+      },
+      "source": [
+        "!pip install pulp"
+      ],
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "Collecting pulp\n",
+            "\u001b[?25l  Downloading https://files.pythonhosted.org/packages/c3/22/5743d7b5d69f84fb63a0b4925862522dbf80e82defcd0c447afb694f3fd0/PuLP-2.3-py3-none-any.whl (40.6MB)\n",
+            "\u001b[K     |████████████████████████████████| 40.6MB 101kB/s \n",
+            "\u001b[?25hCollecting amply>=0.1.2\n",
+            "  Downloading https://files.pythonhosted.org/packages/7f/11/33cb09557ac838d9488779b79e05a2a3c1f3ce9747cd242ba68332736778/amply-0.1.2.tar.gz\n",
+            "  Installing build dependencies ... \u001b[?25l\u001b[?25hdone\n",
+            "  Getting requirements to build wheel ... \u001b[?25l\u001b[?25hdone\n",
+            "    Preparing wheel metadata ... \u001b[?25l\u001b[?25hdone\n",
+            "Requirement already satisfied: pyparsing in /usr/local/lib/python3.6/dist-packages (from amply>=0.1.2->pulp) (2.4.7)\n",
+            "Requirement already satisfied: docutils>=0.3 in /usr/local/lib/python3.6/dist-packages (from amply>=0.1.2->pulp) (0.15.2)\n",
+            "Building wheels for collected packages: amply\n",
+            "  Building wheel for amply (PEP 517) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for amply: filename=amply-0.1.2-cp36-none-any.whl size=16572 sha256=faffb045464cdf55e92356ebebec31e05a80f1b94033add562d26eef3048b48f\n",
+            "  Stored in directory: /root/.cache/pip/wheels/84/18/f7/e5c3ed13ed5bb721763f77d4a924331d59ef115ce61c9d26eb\n",
+            "Successfully built amply\n",
+            "Installing collected packages: amply, pulp\n",
+            "Successfully installed amply-0.1.2 pulp-2.3\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "vMhmnFcaGZjM",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from pulp import *"
+      ],
+      "execution_count": 26,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "QXF2LCBJF1Qk",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 50
+        },
+        "outputId": "4de53a73-be61-40f1-d76f-693d96872bbb"
+      },
+      "source": [
+        "Lp_problem3 = LpProblem(\"3rd LP problem\", LpMaximize)"
+      ],
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "/usr/local/lib/python3.6/dist-packages/pulp/pulp.py:1195: UserWarning: Spaces are not permitted in the name. Converted to '_'\n",
+            "  warnings.warn(\"Spaces are not permitted in the name. Converted to '_'\")\n"
+          ],
+          "name": "stderr"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "rk37i7yuFvu1",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "x1=LpVariable('x1', lowBound=0, cat='Continuous')\n",
+        "x2=LpVariable('x2', lowBound=0, cat='Continuous')"
+      ],
+      "execution_count": 28,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "MN61plj3ETOG",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "Lp_problem3 += 5*x1 + 2*x2 , \"z\""
+      ],
+      "execution_count": 29,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Z2Yf9V-rHCjq",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "Lp_problem3 += 10*x1+2*x2 <= 2100"
+      ],
+      "execution_count": 30,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9bQwNqbqHRK_",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "Lp_problem3 += 1*x1+0.5*x2 <= 600"
+      ],
+      "execution_count": 31,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "-f3NoqpCHqLM",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 202
+        },
+        "outputId": "54e81d02-ebc7-41a7-e2e0-1786de8f21c7"
+      },
+      "source": [
+        "Lp_problem3"
+      ],
+      "execution_count": 32,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "3rd_LP_problem:\n",
+              "MAXIMIZE\n",
+              "5*x1 + 2*x2 + 0\n",
+              "SUBJECT TO\n",
+              "_C1: 10 x1 + 2 x2 <= 2100\n",
+              "\n",
+              "_C2: x1 + 0.5 x2 <= 600\n",
+              "\n",
+              "VARIABLES\n",
+              "x1 Continuous\n",
+              "x2 Continuous"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 32
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "uMPfrvsCHuEH",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "808dff41-50e6-426e-86f6-2b62e00b55c8"
+      },
+      "source": [
+        "Lp_problem3.solve()"
+      ],
+      "execution_count": 34,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "1"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 34
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ZndGLUCILuqY",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 35
+        },
+        "outputId": "063af52c-3a00-41d6-e8d4-4c64a1255607"
+      },
+      "source": [
+        "LpStatus[Lp_problem3.status]"
+      ],
+      "execution_count": 35,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "application/vnd.google.colaboratory.intrinsic+json": {
+              "type": "string"
+            },
+            "text/plain": [
+              "'Optimal'"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 35
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "MFjvpv8JL3ny",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 50
+        },
+        "outputId": "600a6760-e85b-4898-9632-37c447295b95"
+      },
+      "source": [
+        "for variable in Lp_problem3.variables():\n",
+        "    print(\"{} = {}\". format(variable.name, variable.varValue))"
+      ],
+      "execution_count": 39,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "x1 = 0.0\n",
+            "x2 = 1050.0\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "pX4vGucYMM38",
+        "colab_type": "code",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        },
+        "outputId": "317c7e90-cbb6-495b-fcdf-96cc0d083872"
+      },
+      "source": [
+        "value(Lp_problem3.objective)"
+      ],
+      "execution_count": 42,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "2100.0"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 42
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "nuGoY4htMZr3",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
